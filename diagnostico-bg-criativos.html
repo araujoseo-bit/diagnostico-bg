@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico de Crescimento — BG Criativos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D0F1A;
+    --navy2: #161927;
+    --navy3: #1E2235;
+    --red: #E8364A;
+    --red2: #FF4D62;
+    --gold: #F5A623;
+    --white: #F7F8FC;
+    --muted: #8B90A8;
+    --border: rgba(255,255,255,0.07);
+    --card: rgba(255,255,255,0.04);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BG grid texture ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,54,74,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,54,74,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glow {
+    position: fixed;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+  }
+  .glow-1 { background: var(--red); top: -200px; right: -100px; }
+  .glow-2 { background: #2A3AFF; bottom: -200px; left: -100px; }
+
+  #app { position: relative; z-index: 1; }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ── INTRO ── */
+  #intro {
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .brand-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(232,54,74,0.4);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--red2);
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .brand-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--red2);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes slideIn { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes countUp { from{opacity:0;transform:scale(0.5)} to{opacity:1;transform:scale(1)} }
+
+  .intro-eyebrow {
+    font-family: var(--font-display);
+    font-size: clamp(11px, 2vw, 13px);
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .intro-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.2s ease both;
+    max-width: 800px;
+  }
+
+  .intro-title em {
+    font-style: normal;
+    color: var(--red);
+    position: relative;
+  }
+  .intro-title em::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 0; right: 0;
+    height: 3px;
+    background: var(--red);
+    opacity: 0.4;
+    border-radius: 2px;
+  }
+
+  .intro-sub {
+    font-size: clamp(15px, 2.5vw, 18px);
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0 auto 48px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s 0.4s ease both;
+    flex-wrap: wrap;
+  }
+
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--white);
+    display: block;
+  }
+  .stat-lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--red);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 18px 40px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+    animation: fadeUp 0.6s 0.5s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(232,54,74,0.4); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .btn-arrow { font-size: 20px; transition: transform 0.2s; }
+  .btn-primary:hover .btn-arrow { transform: translateX(4px); }
+
+  .trust-note {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--muted);
+    animation: fadeUp 0.6s 0.6s ease both;
+  }
+  .trust-note strong { color: var(--white); }
+
+  /* ── QUIZ ── */
+  #quiz {
+    padding: 0;
+    justify-content: flex-start;
+  }
+
+  .quiz-header {
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(13,15,26,0.8);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .quiz-brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+  }
+  .quiz-brand span { color: var(--red); }
+
+  .progress-wrap { flex: 1; max-width: 300px; margin: 0 32px; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), var(--red2));
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .quiz-step-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--font-display);
+    white-space: nowrap;
+  }
+
+  .quiz-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .question-category {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+    animation: slideIn 0.4s ease both;
+  }
+
+  .question-text {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 4vw, 30px);
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    margin-bottom: 12px;
+    animation: slideIn 0.4s 0.05s ease both;
+    max-width: 600px;
+  }
+
+  .question-sub {
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 40px;
+    animation: slideIn 0.4s 0.1s ease both;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+  .options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 560px;
+    animation: slideIn 0.4s 0.15s ease both;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .option-btn:hover {
+    border-color: rgba(232,54,74,0.4);
+    background: rgba(232,54,74,0.06);
+    transform: translateX(4px);
+  }
+  .option-btn.selected {
+    border-color: var(--red);
+    background: rgba(232,54,74,0.1);
+  }
+
+  .option-letter {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--navy3);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.2s;
+  }
+  .option-btn.selected .option-letter,
+  .option-btn:hover .option-letter {
+    background: var(--red);
+    border-color: var(--red);
+    color: #fff;
+  }
+
+  .option-content { flex: 1; }
+  .option-title { font-weight: 500; }
+  .option-detail { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+  .quiz-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 40px;
+    width: 100%;
+    max-width: 560px;
+    animation: slideIn 0.4s 0.2s ease both;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 12px 24px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--white); }
+
+  .btn-next {
+    background: var(--red);
+    border: none;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .btn-next.enabled { opacity: 1; pointer-events: all; }
+  .btn-next.enabled:hover { box-shadow: 0 8px 24px rgba(232,54,74,0.4); transform: translateY(-1px); }
+
+  /* ── LOADING ── */
+  #loading {
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 24px;
+  }
+
+  .loading-icon {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    border-top-color: var(--red);
+    animation: spin 1s linear infinite;
+    margin-bottom: 32px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .loading-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 32px;
+  }
+  .loading-step {
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .loading-step.visible { opacity: 1; }
+  .loading-step .dot {
+    width: 6px; height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── RESULT ── */
+  #result {
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 60px 24px 80px;
+  }
+
+  .result-header {
+    text-align: center;
+    max-width: 680px;
+    margin-bottom: 60px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .result-badge {
+    display: inline-block;
+    background: rgba(232,54,74,0.15);
+    border: 1px solid rgba(232,54,74,0.3);
+    color: var(--red2);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .result-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .result-title .score-highlight {
+    color: var(--red);
+  }
+
+  .result-subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .result-content {
+    width: 100%;
+    max-width: 820px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* Score cards */
+  .scores-section {
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .scores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .score-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    transition: border-color 0.3s;
+  }
+  .score-card:hover { border-color: rgba(232,54,74,0.2); }
+
+  .score-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .score-card-name {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    max-width: 120px;
+    line-height: 1.3;
+  }
+  .score-card-num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .score-bar-bg {
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .score-status {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* Diagnosis cards */
+  .diagnosis-section {
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+
+  .diag-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 16px;
+  }
+
+  .diag-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .diag-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .diag-icon.red { background: rgba(232,54,74,0.15); }
+  .diag-icon.gold { background: rgba(245,166,35,0.15); }
+  .diag-icon.green { background: rgba(52,211,153,0.1); }
+
+  .diag-card-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .diag-card-meta {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .diag-card-body {
+    font-size: 15px;
+    color: rgba(247,248,252,0.8);
+    line-height: 1.75;
+  }
+  .diag-card-body strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* Action plan */
+  .action-section {
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+
+  .action-card {
+    background: linear-gradient(135deg, rgba(232,54,74,0.12), rgba(232,54,74,0.04));
+    border: 1px solid rgba(232,54,74,0.25);
+    border-radius: 20px;
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .action-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: rgba(232,54,74,0.08);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .action-tag {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+
+  .action-title {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .action-body {
+    font-size: 15px;
+    color: rgba(247,248,252,0.8);
+    line-height: 1.75;
+    margin-bottom: 28px;
+  }
+  .action-body strong { color: var(--white); }
+
+  /* CTA */
+  .cta-section {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    animation: fadeUp 0.5s 0.4s ease both;
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 800;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .cta-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--red);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 18px 40px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-cta:hover {
+    box-shadow: 0 12px 40px rgba(232,54,74,0.4);
+    transform: translateY(-2px);
+  }
+
+  .cta-disclaimer {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Input for name */
+  .name-input-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 560px;
+    animation: slideIn 0.4s 0.15s ease both;
+  }
+  .name-input-wrap label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .quiz-input {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    width: 100%;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .quiz-input:focus { border-color: rgba(232,54,74,0.5); }
+  .quiz-input::placeholder { color: var(--muted); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .quiz-header { padding: 16px; }
+    .progress-wrap { display: none; }
+    .quiz-body { padding: 40px 20px; }
+    .action-card, .cta-section { padding: 28px 20px; }
+    .stats-row { gap: 28px; }
+  }
+
+  .loading-text-animated {
+    animation: fadeIn 0.5s ease both;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .score-num-low { color: var(--red); }
+  .score-num-mid { color: var(--gold); }
+  .score-num-high { color: #34D399; }
+  .bar-low { background: linear-gradient(90deg, var(--red), #FF6B7A); }
+  .bar-mid { background: linear-gradient(90deg, var(--gold), #FFD07B); }
+  .bar-high { background: linear-gradient(90deg, #34D399, #6EE7B7); }
+</style>
+</head>
+<body>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<div id="app">
+
+  <!-- ═══════════════════════ INTRO ═══════════════════════ -->
+  <section id="intro" class="screen active">
+    <div class="brand-badge">BG Criativos · Diagnóstico Gratuito</div>
+    <p class="intro-eyebrow">Método MSFA · 4 minutos · Resultado imediato</p>
+    <h1 class="intro-title">
+      Descubra por que seu negócio ainda<br>
+      não está no <em>próximo nível</em>
+    </h1>
+    <p class="intro-sub">
+      Responda 12 perguntas e receba um diagnóstico personalizado: onde está vazando dinheiro, o que está travando seu crescimento e qual é o único passo que você precisa dar agora.
+    </p>
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-num">+40%</span>
+        <span class="stat-lbl">faturamento em 2 meses</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">2×</span>
+        <span class="stat-lbl">receita dobrada em 3 meses</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">R$ 1,2M</span>
+        <span class="stat-lbl">receita incremental gerada</span>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="startQuiz()">
+      Fazer meu diagnóstico gratuito
+      <span class="btn-arrow">→</span>
+    </button>
+    <p class="trust-note">Sem cadastro. <strong>100% gratuito.</strong> Resultado na hora.</p>
+  </section>
+
+  <!-- ═══════════════════════ QUIZ ═══════════════════════ -->
+  <section id="quiz" class="screen">
+    <div class="quiz-header">
+      <div class="quiz-brand">BG<span>.</span></div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="progress-text">Pergunta 1 de 12</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="quiz-step-label" id="step-category">Contexto</div>
+    </div>
+    <div class="quiz-body" id="quiz-body"></div>
+  </section>
+
+  <!-- ═══════════════════════ LOADING ═══════════════════════ -->
+  <section id="loading" class="screen">
+    <div class="loading-icon"></div>
+    <div class="loading-title">Gerando seu diagnóstico...</div>
+    <p class="loading-text-animated" id="loading-subtitle">Analisando suas respostas com o método MSFA</p>
+    <ul class="loading-steps">
+      <li class="loading-step" id="ls1"><span class="dot"></span>Mapeando os ativos do negócio</li>
+      <li class="loading-step" id="ls2"><span class="dot"></span>Calculando score por categoria</li>
+      <li class="loading-step" id="ls3"><span class="dot"></span>Identificando gargalos de faturamento</li>
+      <li class="loading-step" id="ls4"><span class="dot"></span>Criando plano de ação personalizado</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════ RESULT ═══════════════════════ -->
+  <section id="result" class="screen">
+    <div class="result-header">
+      <div class="result-badge">Diagnóstico completo</div>
+      <h2 class="result-title" id="result-title">Seu negócio tem potencial — <span class="score-highlight">mas está deixando dinheiro na mesa</span></h2>
+      <p class="result-subtitle" id="result-subtitle"></p>
+    </div>
+    <div class="result-content" id="result-content"></div>
+  </section>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// QUESTIONS
+// ════════════════════════════════════════════════════════
+const QUESTIONS = [
+  {
+    id: 'name',
+    category: 'Contexto',
+    type: 'text',
+    text: 'Qual é o seu nome?',
+    sub: 'Vamos personalizar seu diagnóstico.',
+    placeholder: 'Digite seu primeiro nome...',
+    key: 'name'
+  },
+  {
+    id: 'revenue',
+    category: 'Contexto',
+    text: 'Qual é o faturamento médio mensal do seu negócio hoje?',
+    sub: 'Seja honesto — isso calibra o diagnóstico.',
+    key: 'revenue',
+    options: [
+      { value: 1, label: 'Abaixo de R$ 30.000/mês', detail: 'Ainda em fase de tração' },
+      { value: 2, label: 'Entre R$ 30.000 e R$ 60.000/mês', detail: 'Negócio funcionando, crescimento travado' },
+      { value: 3, label: 'Entre R$ 60.000 e R$ 150.000/mês', detail: 'Crescimento existe, mas sem consistência' },
+      { value: 4, label: 'Acima de R$ 150.000/mês', detail: 'Escala, mas sente que poderia ir mais longe' },
+    ]
+  },
+  {
+    id: 'growth',
+    category: 'Crescimento',
+    text: 'Como está o crescimento do faturamento nos últimos 3 meses?',
+    sub: 'Comparado ao mesmo período do ano anterior.',
+    key: 'growth',
+    options: [
+      { value: 1, label: 'Caindo ou estagnado', detail: 'Preocupante — precisa de ação imediata' },
+      { value: 2, label: 'Crescendo, mas lentamente', detail: 'Potencial não realizado' },
+      { value: 3, label: 'Crescendo de forma consistente', detail: 'Bom ritmo, pode ser acelerado' },
+      { value: 4, label: 'Crescimento acelerado', detail: 'Estrutura para manter e escalar' },
+    ]
+  },
+  {
+    id: 'focus',
+    category: 'Foco do Dono',
+    text: 'Em que você passa a maior parte do seu tempo como dono?',
+    sub: 'Seja honesto. Essa é uma das perguntas mais reveladoras do diagnóstico.',
+    key: 'focus',
+    options: [
+      { value: 1, label: 'Apagando incêndios operacionais', detail: 'Dia a dia engole tudo' },
+      { value: 2, label: 'Gerenciando equipe e processos', detail: 'Gestor, não estrategista' },
+      { value: 3, label: 'Vendendo e atendendo clientes', detail: 'Negócio depende de você' },
+      { value: 4, label: 'Estratégia e crescimento', detail: 'Raro — maioria está longe disso' },
+    ]
+  },
+  {
+    id: 'metrics',
+    category: 'Números',
+    text: 'Você conhece os números críticos do seu negócio de cabeça?',
+    sub: 'CAC, CPL, taxa de conversão, ticket médio, margem.',
+    key: 'metrics',
+    options: [
+      { value: 1, label: 'Não tenho esses números', detail: 'Não sei o que está funcionando' },
+      { value: 2, label: 'Tenho alguns, mas não todos', detail: 'Visão parcial do negócio' },
+      { value: 3, label: 'Tenho, mas não analiso com frequência', detail: 'Dado parado não gera resultado' },
+      { value: 4, label: 'Acompanho semanalmente', detail: 'Boa base para decisão' },
+    ]
+  },
+  {
+    id: 'funnel',
+    category: 'Processo de Vendas',
+    text: 'Seu processo de vendas está documentado e é previsível?',
+    sub: 'Do primeiro contato até o fechamento.',
+    key: 'funnel',
+    options: [
+      { value: 1, label: 'Não tenho processo definido', detail: 'Cada venda é um improviso' },
+      { value: 2, label: 'Tenho um processo informal na cabeça', detail: 'Depende de quem está vendendo' },
+      { value: 3, label: 'Tenho documentado, mas pouco seguido', detail: 'Processo existe, execução falha' },
+      { value: 4, label: 'Processo claro e seguido pela equipe', detail: 'Boa estrutura' },
+    ]
+  },
+  {
+    id: 'assets',
+    category: 'Ativos',
+    text: 'Qual é a sua relação com os ativos de marketing que já tem?',
+    sub: 'Listas de e-mail, remarketing, base de clientes passados, campanhas antigas.',
+    key: 'assets',
+    options: [
+      { value: 1, label: 'Não sei o que tenho', detail: 'Ativos invisíveis = dinheiro parado' },
+      { value: 2, label: 'Sei que tenho, mas não uso', detail: 'Potencial desperdiçado' },
+      { value: 3, label: 'Uso alguns, mas sem estratégia', detail: 'Poderia extrair muito mais' },
+      { value: 4, label: 'Uso todos ativamente', detail: 'Boa exploração dos ativos' },
+    ]
+  },
+  {
+    id: 'overload',
+    category: 'Sobrecarga',
+    text: 'Você sente que para faturar mais, precisaria trabalhar ainda mais?',
+    sub: 'Essa crença é o maior freio de crescimento que vemos nos negócios.',
+    key: 'overload',
+    options: [
+      { value: 1, label: 'Sim, completamente. Já estou no limite', detail: 'Armadilha clássica do crescimento' },
+      { value: 2, label: 'Na maior parte do tempo, sim', detail: 'Modelo não é sustentável' },
+      { value: 3, label: 'Às vezes, mas estou trabalhando nisso', detail: 'Consciência do problema' },
+      { value: 4, label: 'Não, meu negócio funciona sem depender de mim', detail: 'Situação ideal' },
+    ]
+  },
+  {
+    id: 'action',
+    category: 'Execução',
+    text: 'Como você descreveria sua capacidade de executar os planos que traça?',
+    sub: 'Muitas ideias na cabeça é sinal de alerta.',
+    key: 'action',
+    options: [
+      { value: 1, label: 'Tenho muitas ideias e executo poucas', detail: 'Paralisia por excesso de opções' },
+      { value: 2, label: 'Começo, mas raramente termino', detail: 'Foco fragmentado' },
+      { value: 3, label: 'Executo razoavelmente bem', detail: 'Pode melhorar com estrutura' },
+      { value: 4, label: 'Executo com consistência', detail: 'Raridade entre donos de negócio' },
+    ]
+  },
+  {
+    id: 'revenue_source',
+    category: 'Diagnóstico',
+    text: 'Você sabe exatamente de onde vem a maior parte do seu faturamento?',
+    sub: 'Qual produto, canal ou cliente responde por 70%+ da sua receita.',
+    key: 'revenue_source',
+    options: [
+      { value: 1, label: 'Não tenho clareza sobre isso', detail: 'Problema crítico de visão' },
+      { value: 2, label: 'Tenho uma ideia, mas não confirmei com dados', detail: 'Suspeita sem prova' },
+      { value: 3, label: 'Sei, mas foco energia em outras coisas', detail: 'Comportamento paradoxal comum' },
+      { value: 4, label: 'Sei e foco exatamente nisso', detail: 'Comportamento ideal' },
+    ]
+  },
+  {
+    id: 'help',
+    category: 'Apoio',
+    text: 'Com que frequência você tem alguém com quem discutir estratégia do negócio?',
+    sub: 'Alguém que conhece seus números, suas metas e está do lado certo da mesa.',
+    key: 'help',
+    options: [
+      { value: 1, label: 'Toco tudo sozinho', detail: 'A solidão empreendedora é real' },
+      { value: 2, label: 'Às vezes falo com amigos ou sócios', detail: 'Sem comprometimento real com resultados' },
+      { value: 3, label: 'Tenho mentoria ou curso', detail: 'Genérico demais para meu negócio' },
+      { value: 4, label: 'Tenho parceiro estratégico dedicado', detail: 'Situação ideal — rara' },
+    ]
+  },
+  {
+    id: 'goal',
+    category: 'Meta',
+    text: 'Você consegue descrever, com precisão, qual é a sua meta para os próximos 90 dias?',
+    sub: 'Não "crescer" ou "faturar mais" — uma meta específica, com número.',
+    key: 'goal',
+    options: [
+      { value: 1, label: 'Não tenho uma meta definida', detail: 'Corre sem saber para onde' },
+      { value: 2, label: 'Tenho uma ideia vaga', detail: 'Alvo impreciso = mira errada' },
+      { value: 3, label: 'Tenho uma meta, mas não compartilhei com ninguém', detail: 'Meta sem accountability é intenção' },
+      { value: 4, label: 'Meta clara, documentada, com plano', detail: 'Pronto para executar' },
+    ]
+  },
+];
+
+// ════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════
+let answers = {};
+let currentQ = 0;
+
+function startQuiz() {
+  showScreen('quiz');
+  renderQuestion(0);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ════════════════════════════════════════════════════════
+// RENDER QUESTION
+// ════════════════════════════════════════════════════════
+function renderQuestion(idx) {
+  const q = QUESTIONS[idx];
+  const total = QUESTIONS.length;
+  const pct = Math.round((idx / total) * 100);
+
+  document.getElementById('progress-text').textContent = `Pergunta ${idx + 1} de ${total}`;
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('step-category').textContent = q.category;
+
+  const body = document.getElementById('quiz-body');
+  body.style.opacity = '0';
+
+  setTimeout(() => {
+    if (q.type === 'text') {
+      body.innerHTML = `
+        <p class="question-category">${q.category}</p>
+        <h2 class="question-text">${q.text}</h2>
+        <p class="question-sub">${q.sub}</p>
+        <div class="name-input-wrap">
+          <input class="quiz-input" type="text" placeholder="${q.placeholder}" id="text-answer"
+            value="${answers[q.key] || ''}" oninput="onTextInput(this.value)" />
+        </div>
+        <div class="quiz-nav">
+          ${idx > 0 ? `<button class="btn-ghost" onclick="goBack()">← Voltar</button>` : '<div></div>'}
+          <button class="btn-next ${answers[q.key] ? 'enabled' : ''}" id="btn-next" onclick="goNext()">
+            Continuar <span>→</span>
+          </button>
+        </div>
+      `;
+      const inp = document.getElementById('text-answer');
+      if (inp) { inp.focus(); inp.addEventListener('keydown', e => { if(e.key==='Enter' && answers[q.key]) goNext(); }); }
+    } else {
+      const letters = ['A','B','C','D'];
+      body.innerHTML = `
+        <p class="question-category">${q.category}</p>
+        <h2 class="question-text">${q.text}</h2>
+        <p class="question-sub">${q.sub}</p>
+        <div class="options-grid">
+          ${q.options.map((opt, i) => `
+            <button class="option-btn ${answers[q.key] === opt.value ? 'selected' : ''}"
+              onclick="selectOption(${opt.value}, this)">
+              <span class="option-letter">${letters[i]}</span>
+              <span class="option-content">
+                <span class="option-title">${opt.label}</span>
+                <span class="option-detail">${opt.detail}</span>
+              </span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="quiz-nav">
+          ${idx > 0 ? `<button class="btn-ghost" onclick="goBack()">← Voltar</button>` : '<div></div>'}
+          <button class="btn-next ${answers[q.key] ? 'enabled' : ''}" id="btn-next" onclick="goNext()">
+            Continuar <span>→</span>
+          </button>
+        </div>
+      `;
+    }
+    body.style.opacity = '1';
+    body.style.transition = 'opacity 0.3s';
+  }, 150);
+}
+
+function onTextInput(val) {
+  answers[QUESTIONS[currentQ].key] = val.trim();
+  const btn = document.getElementById('btn-next');
+  if (btn) btn.classList.toggle('enabled', val.trim().length > 0);
+}
+
+function selectOption(value, el) {
+  const q = QUESTIONS[currentQ];
+  answers[q.key] = value;
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  const btn = document.getElementById('btn-next');
+  if (btn) btn.classList.add('enabled');
+  setTimeout(() => goNext(), 380);
+}
+
+function goNext() {
+  const q = QUESTIONS[currentQ];
+  if (!answers[q.key]) return;
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion(currentQ);
+  } else {
+    showLoading();
+  }
+}
+
+function goBack() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion(currentQ);
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// LOADING
+// ════════════════════════════════════════════════════════
+function showLoading() {
+  showScreen('loading');
+  const steps = ['ls1','ls2','ls3','ls4'];
+  steps.forEach((id, i) => {
+    setTimeout(() => {
+      document.getElementById(id).classList.add('visible');
+    }, 700 + i * 700);
+  });
+  setTimeout(() => generateResult(), 4200);
+}
+
+// ════════════════════════════════════════════════════════
+// SCORING
+// ════════════════════════════════════════════════════════
+function calcScores() {
+  const categories = {
+    'Clareza de Metas': { keys: ['goal', 'revenue_source'], max: 8 },
+    'Processo de Vendas': { keys: ['funnel', 'metrics'], max: 8 },
+    'Ativos & Oportunidades': { keys: ['assets', 'growth'], max: 8 },
+    'Foco & Execução': { keys: ['focus', 'action', 'overload'], max: 12 },
+    'Apoio Estratégico': { keys: ['help'], max: 4 },
+  };
+
+  const scores = {};
+  for (const [cat, config] of Object.entries(categories)) {
+    let sum = 0;
+    config.keys.forEach(k => { sum += (answers[k] || 1); });
+    const pct = Math.round((sum / config.max) * 100);
+    scores[cat] = Math.min(pct, 100);
+  }
+  return scores;
+}
+
+function getOverallScore(scores) {
+  const vals = Object.values(scores);
+  return Math.round(vals.reduce((a,b) => a+b, 0) / vals.length);
+}
+
+function getColorClass(score) {
+  if (score < 45) return { num: 'score-num-low', bar: 'bar-low', label: 'Crítico' };
+  if (score < 70) return { num: 'score-num-mid', bar: 'bar-mid', label: 'Atenção' };
+  return { num: 'score-num-high', bar: 'bar-high', label: 'Saudável' };
+}
+
+// ════════════════════════════════════════════════════════
+// AI DIAGNOSTIC via Claude API
+// ════════════════════════════════════════════════════════
+async function callClaude(scores, overall) {
+  const name = answers['name'] || 'Empreendedor';
+  const revenue = ['','Abaixo de R$30k','R$30k–60k','R$60k–150k','Acima de R$150k'][answers['revenue']] || '';
+
+  const prompt = `Você é o consultor-chefe da BG Criativos, especialista em aceleração de faturamento para donos de negócio usando o método MSFA.
+
+Dados do empresário:
+- Nome: ${name}
+- Faturamento mensal: ${revenue}
+- Score geral de saúde do negócio: ${overall}/100
+
+Scores por categoria (0-100):
+${Object.entries(scores).map(([k,v]) => `- ${k}: ${v}/100`).join('\n')}
+
+Respostas detalhadas:
+- Crescimento recente: ${['','Caindo/estagnado','Crescendo lentamente','Crescendo consistente','Crescimento acelerado'][answers['growth']]}
+- Foco do dono: ${['','Apagando incêndios','Gerenciando equipe','Vendendo/atendendo','Estratégia e crescimento'][answers['focus']]}
+- Conhece os números: ${['','Não tem','Tem alguns','Tem mas não analisa','Acompanha semanalmente'][answers['metrics']]}
+- Processo de vendas: ${['','Nenhum','Informal na cabeça','Documentado mas ignorado','Claro e seguido'][answers['funnel']]}
+- Usa ativos: ${['','Não sabe o que tem','Sabe mas não usa','Usa sem estratégia','Usa todos'][answers['assets']]}
+- Sobrecarga: ${['','No limite total','Na maioria sim','Às vezes','Negócio independente'][answers['overload']]}
+- Execução: ${['','Muitas ideias pouca ação','Começa mas não termina','Executa razoavelmente','Executa consistência'][answers['action']]}
+- Sabe fonte receita: ${['','Não tem clareza','Tem ideia vaga','Sabe mas foca em outras','Sabe e foca nisso'][answers['revenue_source']]}
+- Apoio estratégico: ${['','Sozinho','Amigos/sócios','Mentoria/curso','Parceiro dedicado'][answers['help']]}
+- Meta clara: ${['','Nenhuma','Ideia vaga','Meta sem accountability','Meta clara com plano'][answers['goal']]}
+
+Gere um diagnóstico personalizado em JSON com exatamente este formato (sem texto antes ou depois, sem markdown, apenas o JSON):
+{
+  "titulo": "Título personalizado de 8-12 palavras que capture o diagnóstico principal (use o nome da pessoa)",
+  "subtitulo": "Uma frase de 20-30 palavras que resuma a situação com empatia e verdade, sem ser suave demais",
+  "diagnosticos": [
+    {
+      "tipo": "critico",
+      "icone": "🔴",
+      "titulo": "Nome do problema principal (6-8 palavras)",
+      "categoria": "O maior risco",
+      "corpo": "2-3 parágrafos de 40-60 palavras cada. Primeiro: descreve a situação com precisão cirúrgica baseada nas respostas. Segundo: explica o impacto financeiro concreto. Terceiro: cria urgência sem ser alarmista."
+    },
+    {
+      "tipo": "oportunidade",
+      "icone": "💡",
+      "titulo": "A maior oportunidade não explorada (6-8 palavras)",
+      "categoria": "Potencial desperdiçado",
+      "corpo": "2 parágrafos. Primeiro: identifica o ativo ou processo que pode ser explorado. Segundo: traduz em impacto de faturamento estimado e por que ele existe agora."
+    }
+  ],
+  "plano_titulo": "Título do plano de ação (use nome da pessoa, seja específico)",
+  "plano_corpo": "2-3 parágrafos descrevendo O ÚNICO PASSO que essa pessoa deve dar nos próximos 7 dias. Baseado nas respostas, identifique o gargalo de maior impacto e descreva a ação específica, não genérica. Crie urgência e mostre que a BG Criativos já identificou exatamente onde está o dinheiro parado.",
+  "cta_titulo": "Frase de chamada de 8-12 palavras personalizadas com o nome, criando urgência genuína",
+  "cta_corpo": "2-3 frases conectando o diagnóstico à Análise de Crescimento gratuita da BG Criativos. Sem exagero. Tom de parceiro, não de vendedor."
+}`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    const raw = data.content.map(c => c.text || '').join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
+  } catch(e) {
+    return buildFallback(scores, overall);
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// FALLBACK (sem API key)
+// ════════════════════════════════════════════════════════
+function buildFallback(scores, overall) {
+  const name = answers['name'] || 'Empreendedor';
+  const weakest = Object.entries(scores).sort((a,b) => a[1]-b[1])[0][0];
+  const strongest = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+
+  const diags = {
+    'Clareza de Metas': {
+      titulo: 'Você corre sem saber exatamente para onde',
+      corpo: `${name}, sem uma meta específica e sem saber de onde vem a maior parte do seu faturamento, cada decisão é um tiro no escuro. Você pode estar trabalhando muito na direção errada.\n\nNegócios sem clareza de meta costumam desperdiçar entre 20% e 40% do potencial de receita em atividades que não movem o número principal. Isso não é preguiça — é falta de foco estruturado.\n\nA boa notícia: isso é o que mais rápido muda com o diagnóstico certo. Uma reunião de 90 minutos pode eliminar esse problema completamente.`
+    },
+    'Processo de Vendas': {
+      titulo: 'Processo de vendas vaza dinheiro toda semana',
+      corpo: `${name}, sem um processo de vendas documentado e seguido, cada lead que entra tem uma conversão diferente dependendo de quem atende e em qual dia. Você está pagando para atrair pessoas e convertendo uma fração do potencial.\n\nEm negócios que faturem entre R$60k e R$150k/mês, uma melhora de 20% na taxa de conversão representa R$12k a R$30k mensais — sem gastar R$1 a mais em tráfego.\n\nEssa é uma das primeiras alavancas que identificamos na Análise de Crescimento. O retorno tende a ser imediato.`
+    },
+    'Ativos & Oportunidades': {
+      titulo: 'Ativos dormindo valem mais do que você pensa',
+      corpo: `${name}, todo negócio tem ativos esquecidos: listas de clientes passados, campanhas que funcionaram e foram paradas sem motivo, audiências de remarketing sem uso. Esses ativos já foram pagos — mas não estão gerando retorno.\n\nSe você tem um histórico de vendas, uma base de e-mails ou um pixel de remarketing configurado e não usa, você tem dinheiro literalmente parado. Reativar uma base de clientes passados costuma gerar entre 15% e 30% de receita incremental sem custo novo.\n\nEssa é a primeira coisa que mapeamos no método MSFA.`
+    },
+    'Foco & Execução': {
+      titulo: 'Sobrecarga bloqueia o crescimento que você quer',
+      corpo: `${name}, a crença de que para crescer é preciso trabalhar mais é a maior armadilha do dono de negócio. Quando tudo depende de você, o negócio tem um teto — e esse teto é o seu limite físico.\n\nO paradoxo é real: quanto mais você trabalha operacionalmente, menos tempo tem para as decisões estratégicas que realmente movem o faturamento. Um plano de uma ação por semana, executado com consistência, gera mais resultado do que cem ideias espalhadas.\n\nFoi exatamente isso que mudou o jogo para nossos clientes que dobraram faturamento em 3 meses.`
+    },
+    'Apoio Estratégico': {
+      titulo: 'Empreender sozinho tem um custo invisível',
+      corpo: `${name}, a solidão empreendedora não é fraqueza — é estrutural. Sem alguém que conheça seus números e suas metas e esteja do seu lado toda semana, as decisões são tomadas no vácuo.\n\nPesquisas mostram que donos de negócio com accountability externo executam 65% mais do que planejam, contra 35% dos que trabalham sozinhos. Não é força de vontade — é sistema.\n\nEssa é a essência do que a BG Criativos oferece: não um consultor que entrega relatório, mas um parceiro que está junto toda semana para garantir que o plano aconteça.`
+    }
+  };
+
+  const diag = diags[weakest] || diags['Foco & Execução'];
+
+  return {
+    titulo: `${name}, seu negócio tem potencial — mas está perdendo dinheiro hoje`,
+    subtitulo: `Com base nas suas respostas, identificamos o gargalo principal que está travando seu crescimento. Aqui está o diagnóstico honesto.`,
+    diagnosticos: [
+      {
+        tipo: 'critico',
+        icone: '🔴',
+        titulo: diag.titulo,
+        categoria: 'Gargalo principal',
+        corpo: diag.corpo
+      },
+      {
+        tipo: 'oportunidade',
+        icone: '💡',
+        titulo: `${strongest}: aqui está sua maior alavanca`,
+        categoria: 'Oportunidade imediata',
+        corpo: `Apesar dos desafios, você tem uma base sólida em ${strongest}. Isso é relevante porque os negócios que crescem mais rápido com o método MSFA são exatamente os que têm pelo menos uma área funcionando bem — porque ela vira a alavanca principal do primeiro plano de ação.\n\nImagine usar essa força como ponto de partida para atacar o gargalo principal. Em 8 semanas, esse contraste pode se transformar em crescimento real e mensurável.`
+      }
+    ],
+    plano_titulo: `${name}, o único passo que você precisa dar esta semana`,
+    plano_corpo: `Com base no seu perfil, o maior impacto imediato está em ${weakest.toLowerCase()}. Antes de criar qualquer nova campanha, contratar alguém ou lançar produto novo, você precisa resolver esse gargalo — porque ele vai continuar limitando o resultado de tudo o que você tentar.\n\nO plano de uma ação do método MSFA funciona exatamente assim: identifica o ponto de maior alavancagem e foca toda a energia nele por uma semana. Sem lista de 20 tarefas. Sem projetos paralelos. Um movimento cirúrgico.\n\nNa Análise de Crescimento gratuita, a BG Criativos vai mapear seus ativos, seus números e sua meta — e sair da reunião com esse plano pronto para você. É o primeiro passo do método aplicado ao seu negócio real.`,
+    cta_titulo: `${name}, o diagnóstico completo começa aqui`,
+    cta_corpo: `A Análise de Crescimento gratuita é uma reunião de 60 minutos onde mapeamos seu negócio com o método MSFA e identificamos exatamente onde está o dinheiro parado. Sem pitch genérico, sem promessa vaga. Só depois do diagnóstico apresentamos uma proposta — se fizer sentido para os dois lados. Não há compromisso.`
+  };
+}
+
+// ════════════════════════════════════════════════════════
+// RENDER RESULT
+// ════════════════════════════════════════════════════════
+async function generateResult() {
+  const scores = calcScores();
+  const overall = getOverallScore(scores);
+  const aiData = await callClaude(scores, overall);
+
+  showScreen('result');
+
+  // Header
+  document.getElementById('result-title').innerHTML =
+    aiData.titulo.replace(/(\d+)/, '<span class="score-highlight">$1</span>');
+  document.getElementById('result-subtitle').textContent = aiData.subtitulo;
+
+  // Build content
+  const content = document.getElementById('result-content');
+  content.innerHTML = '';
+
+  // Score cards
+  const scoresHtml = Object.entries(scores).map(([cat, score]) => {
+    const c = getColorClass(score);
+    return `
+      <div class="score-card">
+        <div class="score-card-top">
+          <div class="score-card-name">${cat}</div>
+          <div class="score-card-num ${c.num}">${score}</div>
+        </div>
+        <div class="score-bar-bg">
+          <div class="score-bar-fill ${c.bar}" style="width:0%" data-target="${score}%"></div>
+        </div>
+        <div class="score-status">${c.label}</div>
+      </div>
+    `;
+  }).join('');
+
+  const overallC = getColorClass(overall);
+
+  content.innerHTML = `
+    <div class="scores-section">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <p class="section-title" style="margin:0">Score por categoria</p>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:13px;color:var(--muted)">Score geral:</span>
+          <span class="score-card-num ${overallC.num}" style="font-size:36px">${overall}</span>
+          <span style="font-size:13px;color:var(--muted)">/100</span>
+        </div>
+      </div>
+      <div class="scores-grid">${scoresHtml}</div>
+    </div>
+
+    <div class="diagnosis-section">
+      <p class="section-title">Diagnóstico personalizado</p>
+      ${(aiData.diagnosticos || []).map(d => `
+        <div class="diag-card">
+          <div class="diag-card-header">
+            <div class="diag-icon ${d.tipo === 'critico' ? 'red' : 'gold'}">${d.icone}</div>
+            <div>
+              <div class="diag-card-title">${d.titulo}</div>
+              <div class="diag-card-meta">${d.categoria}</div>
+            </div>
+          </div>
+          <div class="diag-card-body">${(d.corpo || '').split('\n').map(p => `<p style="margin-bottom:12px">${p}</p>`).join('')}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="action-section">
+      <div class="action-card">
+        <div class="action-tag">⚡ Plano de ação — método MSFA</div>
+        <h3 class="action-title">${aiData.plano_titulo}</h3>
+        <div class="action-body">${(aiData.plano_corpo || '').split('\n').map(p => `<p style="margin-bottom:12px">${p}</p>`).join('')}</div>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <h3 class="cta-title">${aiData.cta_titulo}</h3>
+      <p class="cta-sub">${aiData.cta_corpo}</p>
+      <a href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20fiz%20o%20diagn%C3%B3stico%20e%20quero%20agendar%20minha%20An%C3%A1lise%20de%20Crescimento" target="_blank" class="btn-cta">
+        Quero minha Análise de Crescimento gratuita →
+      </a>
+      <p class="cta-disclaimer">Reunião de 60 min · Sem compromisso · Resultado concreto</p>
+    </div>
+  `;
+
+  // Animate score bars
+  setTimeout(() => {
+    document.querySelectorAll('.score-bar-fill').forEach(bar => {
+      bar.style.transition = 'width 1.5s cubic-bezier(0.4,0,0.2,1)';
+      bar.style.width = bar.dataset.target;
+    });
+  }, 200);
+}
+</script>
+</body>
+</html>
