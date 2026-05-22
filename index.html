@@ -68,8 +68,9 @@
   #intro {
     align-items: center;
     justify-content: center;
-    padding: 40px 24px;
+    padding: 72px 24px 80px;
     text-align: center;
+    flex-direction: column;
   }
 
   .brand-badge {
@@ -109,18 +110,53 @@
     animation: fadeUp 0.6s 0.1s ease both;
   }
 
+  .intro-product-name {
+    font-family: var(--font-display);
+    font-size: clamp(11px, 2vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.1s ease both;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .intro-product-name::before,
+  .intro-product-name::after {
+    content: '';
+    height: 1px;
+    width: 32px;
+    background: var(--teal);
+    opacity: 0.4;
+    display: inline-block;
+  }
+
   .intro-title {
     font-family: var(--font-display);
-    font-size: clamp(32px, 6vw, 64px);
+    font-size: clamp(36px, 6vw, 68px);
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
     animation: fadeUp 0.6s 0.2s ease both;
-    max-width: 800px;
+    max-width: 820px;
   }
 
-  .intro-title em {
+  .intro-title-line2 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6vw, 68px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s 0.25s ease both;
+    max-width: 820px;
+  }
+
+  .intro-title em,
+  .intro-title-line2 em {
     font-style: normal;
     background: linear-gradient(90deg, var(--teal), var(--gold2));
     -webkit-background-clip: text;
@@ -128,7 +164,8 @@
     background-clip: text;
     position: relative;
   }
-  .intro-title em::after {
+  .intro-title em::after,
+  .intro-title-line2 em::after {
     content: '';
     position: absolute;
     bottom: 2px; left: 0; right: 0;
@@ -139,33 +176,102 @@
   }
 
   .intro-sub {
-    font-size: clamp(15px, 2.5vw, 18px);
-    color: var(--muted);
-    font-weight: 300;
-    line-height: 1.7;
-    max-width: 560px;
-    margin: 0 auto 48px;
+    font-size: clamp(16px, 2.5vw, 19px);
+    color: rgba(242,244,250,0.75);
+    font-weight: 400;
+    line-height: 1.65;
+    max-width: 580px;
+    margin: 0 auto 36px;
     animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .intro-descobre {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 520px;
+    margin: 0 auto 44px;
+    animation: fadeUp 0.6s 0.35s ease both;
+    text-align: left;
+  }
+  .intro-descobre-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: rgba(242,244,250,0.8);
+    line-height: 1.5;
+  }
+  .intro-descobre-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(42,184,168,0.15);
+    border: 1px solid rgba(42,184,168,0.4);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  .stats-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    animation: fadeUp 0.6s 0.4s ease both;
   }
 
   .stats-row {
     display: flex;
-    gap: 48px;
+    gap: 16px;
     justify-content: center;
-    margin-bottom: 48px;
-    animation: fadeUp 0.6s 0.4s ease both;
+    margin-bottom: 44px;
+    animation: fadeUp 0.6s 0.45s ease both;
     flex-wrap: wrap;
+    max-width: 720px;
   }
 
-  .stat { text-align: center; }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    text-align: left;
+    flex: 1;
+    min-width: 180px;
+    max-width: 220px;
+  }
   .stat-num {
     font-family: var(--font-display);
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 800;
+    background: linear-gradient(90deg, var(--teal), var(--gold2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .stat-lbl {
+    font-size: 13px;
+    font-weight: 600;
     color: var(--white);
     display: block;
+    margin-bottom: 6px;
+    line-height: 1.3;
   }
-  .stat-lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .stat-ctx {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
 
   .btn-primary {
     display: inline-flex;
@@ -895,34 +1001,56 @@
 
   <!-- ═══════════════════════ INTRO ═══════════════════════ -->
   <section id="intro" class="screen active">
-    <div class="brand-badge">BG CrieAtivos · Diagnóstico Gratuito</div>
-    <p class="intro-eyebrow">4 minutos · 12 perguntas · Resultado personalizado</p>
-    <h1 class="intro-title">
-      Seu negócio já tem o suficiente<br>
-      para faturar <em>muito mais</em>
-    </h1>
+
+    <div class="brand-badge">BG CrieAtivos</div>
+
+    <p class="intro-product-name">Raio-X do Faturamento</p>
+
+    <h1 class="intro-title">Entenda o que está acontecendo</h1>
+    <p class="intro-title-line2">no seu negócio. <em>Desbloqueie o crescimento.</em></p>
+
     <p class="intro-sub">
-      Responda 12 perguntas e descubra exatamente onde está a receita represada no seu negócio, o que está limitando o crescimento e qual é a única ação concreta que você precisa tomar esta semana.
+      Tem dinheiro parado no seu negócio agora. Não é pouco. Este diagnóstico entra, identifica onde está esse dinheiro e te diz exatamente o que fazer esta semana para recuperá-lo.
     </p>
+
+    <div class="intro-descobre">
+      <div class="intro-descobre-item">
+        <div class="intro-descobre-dot">✓</div>
+        <span>Onde exatamente a receita está travada — com o contexto do seu negócio</span>
+      </div>
+      <div class="intro-descobre-item">
+        <div class="intro-descobre-dot">✓</div>
+        <span>O que é possível gerar com o que você já tem, sem aumentar investimento</span>
+      </div>
+      <div class="intro-descobre-item">
+        <div class="intro-descobre-dot">✓</div>
+        <span>Uma única ação para esta semana — concreta, executável, sem teoria</span>
+      </div>
+    </div>
+
+    <p class="stats-section-label">Resultados reais de clientes BG CrieAtivos</p>
     <div class="stats-row">
       <div class="stat">
         <span class="stat-num">+40%</span>
-        <span class="stat-lbl">faturamento em 2 meses</span>
+        <span class="stat-lbl">de faturamento em 2 meses</span>
+        <span class="stat-ctx">Cliente de serviços, sem aumentar o investimento em anúncios</span>
       </div>
       <div class="stat">
         <span class="stat-num">2×</span>
         <span class="stat-lbl">receita dobrada em 3 meses</span>
+        <span class="stat-ctx">E-commerce, usando recursos que já existiam no negócio</span>
       </div>
       <div class="stat">
         <span class="stat-num">R$ 1,2M</span>
-        <span class="stat-lbl">receita incremental gerada</span>
+        <span class="stat-lbl">em receita incremental</span>
+        <span class="stat-ctx">Gerados em 2 meses para um único cliente</span>
       </div>
     </div>
+
     <button class="btn-primary" onclick="startQuiz()">
-      Quero meu diagnóstico gratuito
-      <span class="btn-arrow">→</span>
+      Quero ver onde está meu dinheiro →
     </button>
-    <p class="trust-note">Sem cadastro. <strong>100% gratuito.</strong> Resultado na hora.</p>
+
   </section>
 
   <!-- ═══════════════════════ QUIZ ═══════════════════════ -->
@@ -1356,7 +1484,7 @@ Com base nesses dados, aplique o método MSFA e gere o diagnóstico em JSON. Ret
   ],
   "plano_tempo": "X horas (seja realista)",
   "plano_medida": "Como saber que funcionou: 1 frase com número ou sinal concreto",
-  "cta_titulo": "Frase de 8-12 palavras com o nome — que crie o senso de que a análise é o passo natural agora",
+  "cta_titulo": "Frase de 8-12 palavras — tom: o diagnóstico mostrou onde olhar, a análise mostra o que fazer",
   "cta_corpo": "2 frases curtas. Tom: esse diagnóstico apontou onde olhar — a Análise de Crescimento e Escala da BG CrieAtivos é onde entramos no seu negócio de verdade. O objetivo é que a pessoa sinta que seria um desperdício parar aqui."
 }`;
 
@@ -1398,53 +1526,53 @@ function buildFallback(scores, overall) {
     // O problema mais fundamental — tudo o mais é ruído sem isso
     if ((a.goal || 1) <= 2 && (a.revenue_source || 1) <= 2) {
       return {
-        titulo: 'Negócio opera sem destino definido e sem saber o que o sustenta',
+        titulo: 'Você está investindo esforço sem saber para onde e sem saber o que já sustenta o negócio.',
         pontos: [
-          'Situação: não há meta numérica para os próximos 90 dias e a origem da maior parte do faturamento não está confirmada com dados.',
-          'Impacto: sem saber qual número perseguir nem de onde ele vem, cada decisão de investimento ou contratação é tomada sem critério de retorno.',
-          'Urgência: qualquer ação nova — campanha, produto, contratação — vai ter resultado abaixo do possível enquanto esses dois pontos não estiverem resolvidos.'
+          'O que está acontecendo: não existe um número para perseguir nos próximos 90 dias — e a origem da maior parte do faturamento nunca foi confirmada com dados reais.',
+          'O que isso está custando: cada real investido em anúncio, contratação ou produto novo está sendo colocado em campo sem critério. O retorno é aleatório porque a direção também é.',
+          'Por que resolver agora: qualquer ação que você tomar — campanha, produto, equipe nova — vai performar abaixo do possível enquanto esses dois pontos continuarem em aberto.'
         ],
-        plano_acao: 'Definir a meta dos próximos 90 dias e mapear a principal fonte de receita.',
+        plano_acao: 'Reservar 1 hora esta semana para colocar o número da meta no papel e mapear de onde vem a maior parte do dinheiro.',
         passos: [
           'Reserve 1 hora e escreva: "Em 90 dias quero faturar R$ ___ por mês. O produto ou serviço que vai gerar isso é ___."',
-          'Abra o histórico de vendas dos últimos 6 meses e identifique qual produto, canal ou perfil de cliente gerou mais receita.',
-          'Confirme se o que você escreveu no primeiro passo e o que o histórico mostra apontam para o mesmo lugar. Se não apontam, revise a meta.'
+          'Abra o histórico de vendas dos últimos 6 meses e identifique qual produto, canal ou perfil de cliente gerou mais receita. Não use memória — use os dados.',
+          'Compare o que você escreveu com o que os dados mostram. Se apontam para lugares diferentes, a meta precisa ser revista antes de qualquer outra decisão.'
         ],
         tempo: '1 hora',
-        medida: 'Você consegue responder sem hesitar: qual é o número da meta e qual produto vai gerar isso.'
+        medida: 'Você consegue responder, sem hesitar, qual é o número da meta e qual produto vai gerar isso.'
       };
     }
 
     // G2: Contatos chegam e somem sem nenhum acompanhamento
     if ((a.followup || 1) <= 1 && (a.funnel || 1) <= 2) {
       return {
-        titulo: 'Clientes em potencial chegam e somem sem nenhum acompanhamento',
+        titulo: 'Você está pagando para trazer pessoas até o negócio e deixando elas ir embora sem tentar de novo.',
         pontos: [
-          'Situação: não há processo de vendas definido e nenhum acompanhamento sistemático após o primeiro contato.',
-          'Impacto: todo investimento em captação de clientes em potencial está sendo desperdiçado — a maioria das vendas acontece a partir do segundo ou terceiro contato, que nunca ocorre.',
-          'Urgência: aumentar o investimento em anúncios nesse cenário amplia o desperdício, não o faturamento.'
+          'O que está acontecendo: não existe processo de vendas definido e nenhum acompanhamento após o primeiro contato. As pessoas chegam, ouvem e somem.',
+          'O que isso está custando: mais de 60% das vendas acontecem no segundo ou terceiro contato. Se ninguém retoma, o dinheiro investido para trazer cada pessoa foi jogado fora.',
+          'Por que resolver agora: colocar mais dinheiro em anúncios antes de corrigir isso é ampliar o desperdício. O problema não está na captação — está no que acontece depois.'
         ],
-        plano_acao: 'Mapear o que aconteceu com cada contato dos últimos 30 dias.',
+        plano_acao: 'Abrir o histórico dos últimos 30 dias e encontrar as conversas que morreram sem acompanhamento.',
         passos: [
           'Liste todos os contatos ou contatos que chegaram no negócio nos últimos 30 dias.',
-          'Para cada um, anote: recebeu algum retorno após o primeiro contato? Quando? O que foi dito?',
-          'Identifique os que nunca receberam acompanhamento e entre em contato com pelo menos 3 deles ainda esta semana.'
+          'Para cada um: recebeu retorno após o primeiro contato? Quando? O que foi dito? Se a resposta for \'não sei\', esse contato foi perdido.',
+          'Identifique os que ficaram sem retorno e entre em contato com pelo menos 3 deles ainda hoje. Mensagem individualizada — não disparo em massa.'
         ],
         tempo: '2 horas',
-        medida: 'Lista completa com o destino de cada contato e pelo menos 3 conversas reabertas.'
+        medida: 'Você tem uma lista com o destino de cada contato e pelo menos 3 conversas reabertas.'
       };
     }
 
     // G3: Processo existe mas o acompanhamento falha na execução
     if ((a.followup || 1) <= 2 && (a.funnel || 1) >= 3) {
       return {
-        titulo: 'Processo de vendas existe mas perde clientes em potencial no acompanhamento',
+        titulo: 'O processo existe. O que está deixando dinheiro na mesa é a execução que não acontece.',
         pontos: [
-          'Situação: há um processo de vendas estruturado, mas o acompanhamento não é feito com consistência.',
-          'Impacto: contatos que chegaram ao processo saem antes do fechamento por falta de acompanhamento — o gargalo não está na captação, está na execução após o primeiro contato.',
-          'Urgência: corrigir o acompanhamento é a ação de maior retorno imediato, pois o processo já existe.'
+          'O que está acontecendo: o processo de vendas está documentado — mas o acompanhamento não é feito com consistência. As pessoas chegam, avançam e param antes do fechamento.',
+          'O que isso está custando: o gargalo não está na captação. Está no que não acontece depois do primeiro contato. Cada semana sem acompanhamento consistente é uma lista crescente de vendas que não foram fechadas.',
+          'Por que resolver agora: a infraestrutura já existe. Corrigir o acompanhamento é a ação de maior retorno imediato disponível no seu negócio agora.'
         ],
-        plano_acao: 'Auditar os contatos da última semana e executar o acompanhamento pendente.',
+        plano_acao: 'Abrir o histórico dos últimos 7 dias e fechar todos os acompanhamentos pendentes ainda hoje.',
         passos: [
           'Abra o histórico de contatos e liste todos os contatos que chegaram nos últimos 7 dias.',
           'Marque quais receberam acompanhamento conforme o processo e quais ficaram sem retorno.',
@@ -1458,17 +1586,17 @@ function buildFallback(scores, overall) {
     // G4: Base de clientes e ativos parados sem gerar retorno
     if ((a.assets || 1) <= 2 && (a.reactivation || 1) <= 2) {
       return {
-        titulo: 'Base de clientes e recursos do negócio estão parados',
+        titulo: 'Você tem uma base de clientes que já comprou de você — e ela está parada, sem gerar um centavo.',
         pontos: [
-          'Situação: há uma base de clientes que já comprou e recursos que o negócio já tem disponíveis, mas nenhum dos dois está sendo usado ativamente para gerar receita.',
-          'Impacto: reativar clientes existentes custa entre 5 e 7 vezes menos do que adquirir novos. Cada semana sem explorar essa base é receita que poderia existir sem custo para conquistar cada cliente novo.',
-          'Urgência: esses ativos já foram pagos. O custo de não usá-los é invisível, mas real.'
+          'O que está acontecendo: há uma base de clientes com histórico de compra e recursos que o negócio já tem disponíveis. Nenhum dos dois está sendo ativado para gerar receita.',
+          'O que isso está custando: trazer um cliente novo custa entre 5 e 7 vezes mais do que vender de novo para quem já comprou. Cada semana sem ativar essa base é receita que poderia existir sem custo de aquisição.',
+          'Por que resolver agora: esses recursos já foram pagos. Não usá-los não é um erro neutro — é um custo real que aparece no extrato como faturamento que não entrou.'
         ],
-        plano_acao: 'Criar uma oferta personalizada para os principais clientes dos últimos 12 meses.',
+        plano_acao: 'Identificar os melhores clientes dos últimos 12 meses e criar uma oferta direta para cada um.',
         passos: [
-          'Abra o histórico de vendas e identifique os clientes que mais compraram ou mais gastaram no último ano.',
-          'Para cada um, defina: o que compraram? Existe algo complementar ou uma nova necessidade que faz sentido oferecer agora?',
-          'Envie uma mensagem individual para cada um, referenciando a última compra e apresentando a nova oferta. Não use disparo em massa.'
+          'Abra o histórico de vendas e identifique os clientes que mais compraram ou mais gastaram no último ano. Não suponha — olhe os dados.',
+          'Para cada um: o que compraram? Existe algo complementar, um upgrade ou uma nova necessidade que faz sentido oferecer agora?',
+          'Envie uma mensagem individual para cada um, referenciando a última compra e apresentando a nova oferta. Mensagem individual — não disparo.'
         ],
         tempo: '2 a 3 horas',
         medida: 'Pelo menos 1 conversa aberta sobre nova compra ainda esta semana.'
@@ -1478,57 +1606,57 @@ function buildFallback(scores, overall) {
     // G5: Dono preso na operação e convicto de que precisa trabalhar mais
     if ((a.focus || 1) <= 2 && (a.overload || 1) <= 2) {
       return {
-        titulo: 'Dono preso na operação com teto de crescimento no próprio limite físico',
+        titulo: 'O negócio não vai crescer além do que você consegue carregar. E você já está no limite.',
         pontos: [
-          'Situação: a maior parte do tempo vai para resolver problemas operacionais, e há a crença de que faturar mais exige trabalhar mais horas.',
-          'Impacto: quando o crescimento depende da presença do dono, o negócio tem um teto fixo — e esse teto é a capacidade física de uma pessoa.',
-          'Urgência: mais horas de operação não geram mais faturamento. Geram mais cansaço e adiam as decisões que realmente movem o número.'
+          'O que está acontecendo: a maior parte do tempo vai para resolver problemas operacionais. E no fundo existe a crença de que faturar mais significa trabalhar mais horas.',
+          'O que isso está custando: quando o crescimento depende da presença do dono, o negócio tem um teto fixo e imovível — e esse teto é a sua capacidade física.',
+          'Por que resolver agora: mais horas de operação não geram mais faturamento. Geram mais cansaço, mais decisões adiadas e mais meses no mesmo patamar.'
         ],
-        plano_acao: 'Identificar e delegar 1 tarefa operacional esta semana.',
+        plano_acao: 'Liberar tempo esta semana delegando 1 tarefa operacional e usando esse tempo em uma ação comercial.',
         passos: [
-          'Anote tudo que você fez nos últimos 3 dias de trabalho e separe em duas colunas: o que só você pode fazer e o que alguém da equipe poderia fazer.',
-          'Escolha 1 tarefa da segunda coluna e passe para alguém ainda hoje, incluindo 30 minutos de alinhamento se necessário.',
-          'Use o tempo liberado para fazer uma ligação para um cliente ou prospect que você estava adiando.'
+          'Anote tudo que você fez nos últimos 3 dias. Separe em duas colunas: o que só você pode fazer vs o que alguém da equipe poderia fazer com um alinhamento.',
+          'Escolha 1 tarefa da segunda coluna e delegue ainda hoje — com 30 minutos de alinhamento se necessário.',
+          'Use o tempo liberado para entrar em contato com um cliente ou prospect que estava sendo adiado. Não para mais operação.'
         ],
         tempo: '1 hora mais a delegação',
-        medida: '1 tarefa saiu da sua lista permanentemente e 1 ligação comercial foi feita.'
+        medida: '1 tarefa saiu da sua lista permanentemente e 1 ligação ou mensagem comercial foi feita.'
       };
     }
 
     // G6: Sem visibilidade dos números e crescimento travado
     if ((a.metrics || 1) <= 2 && (a.growth || 1) <= 2) {
       return {
-        titulo: 'Faturamento estagnado sem visibilidade de onde o processo de venda perde clientes',
+        titulo: 'O faturamento está travado e você não sabe exatamente onde o negócio está perdendo.',
         pontos: [
-          'Situação: o crescimento está travado e os indicadores críticos do negócio — conversão, custo para conquistar cada cliente, valor médio de cada venda — não são acompanhados.',
-          'Impacto: sem saber onde o processo de venda está perdendo, qualquer tentativa de crescer é baseada em intuição. O problema pode estar na captação, no processo, na oferta ou na retenção — e sem dados, é impossível saber.',
-          'Urgência: investir em crescimento sem visibilidade dos números é o caminho mais caro de descobrir onde está o problema.'
+          'O que está acontecendo: o crescimento parou — e os indicadores críticos do negócio não estão sendo acompanhados. Sem esses dados, é impossível saber onde o processo está falhando.',
+          'O que isso está custando: o problema pode estar na captação, no processo, na oferta ou na retenção. Sem dados, cada tentativa de crescer é uma aposta. E apostas custam caro.',
+          'Por que resolver agora: investir mais — em anúncios, em equipe, em produto — sem visibilidade dos números é a forma mais cara de descobrir onde está o buraco.'
         ],
         plano_acao: 'Levantar a percentual de quem chega e acaba comprando de contato para venda desta semana.',
         passos: [
-          'Conte quantos clientes em potencial chegaram ao negócio nos últimos 30 dias.',
+          'Conte quantos contatos chegaram ao negócio nos últimos 30 dias — todos os canais.',
           'Conte quantos desses se tornaram clientes pagantes no mesmo período.',
-          'Divida o número de clientes pelo número de contatos e multiplique por 100. Esse é o seu percentual de conversão atual — o ponto de partida para qualquer diagnóstico real.'
+          'Divida o número de clientes pelo número de contatos e multiplique por 100. Esse é o seu percentual de conversão real — o ponto de partida para qualquer diagnóstico honesto.'
         ],
         tempo: '1 hora',
-        medida: 'Você tem o percentual de conversão atual e sabe em qual etapa do processo de venda a maior parte dos contatos está saindo.'
+        medida: 'Você tem o percentual de conversão atual e sabe em qual etapa a maior parte dos contatos está saindo.'
       };
     }
 
     // G7: Tem meta e sabe a origem, mas o processo não converte
     if ((a.goal || 1) >= 3 && (a.revenue_source || 1) >= 3 && (a.funnel || 1) <= 2) {
       return {
-        titulo: 'Direção clara, mas o processo de vendas não está convertendo',
+        titulo: 'Você sabe para onde vai, mas o processo de vendas está deixando dinheiro escapar no caminho.',
         pontos: [
-          'Situação: há uma meta definida e clareza sobre a principal fonte de receita, mas o processo de vendas é informal ou inconsistente.',
-          'Impacto: a estratégia está correta — o gargalo está na execução. Leads chegam qualificados mas saem sem comprar por falta de processo.',
-          'Urgência: documentar o processo agora significa capturar resultado com os contatos que já estão chegando, sem aumentar o investimento.'
+          'O que está acontecendo: existe uma meta definida e clareza sobre a principal fonte de receita. O problema está na execução — o processo de vendas é informal ou inconsistente.',
+          'O que isso está custando: as pessoas certas estão chegando ao negócio. E saindo sem comprar — porque o processo não conduz. A estratégia está certa, a execução está falhando.',
+          'Por que resolver agora: documentar o processo hoje significa capturar resultado com os contatos que já estão chegando, sem gastar mais um centavo para trazer mais pessoas.'
         ],
-        plano_acao: 'Documentar as etapas do processo de vendas atual em 1 hora.',
+        plano_acao: 'Documentar em 1 hora o processo de vendas como ele acontece hoje — sem idealizar.',
         passos: [
           'Escreva do zero para o início: quais são os passos desde o primeiro contato até o fechamento? Mesmo que informal, documente como acontece hoje.',
-          'Identifique em qual etapa a maioria dos contatos para de avançar — esse é o ponto de maior perda.',
-          'Crie um roteiro simples para a etapa com maior perda e teste com os próximos 5 clientes em potencial.'
+          'Identifique em qual etapa a maioria dos contatos para de avançar. Esse é o ponto que está custando mais.',
+          'Crie um roteiro simples para essa etapa e teste com os próximos 5 contatos. Observe o que muda.'
         ],
         tempo: '1 a 2 horas',
         medida: 'Processo documentado em até 5 etapas e roteiro definido para o ponto de maior perda.'
@@ -1538,17 +1666,17 @@ function buildFallback(scores, overall) {
     // G8: Crescimento acontece mas sem apoio estratégico para sustentar
     if ((a.growth || 1) >= 3 && (a.help || 1) <= 1) {
       return {
-        titulo: 'Negócio crescendo com decisões críticas sendo tomadas sozinho',
+        titulo: 'O negócio está crescendo — e você está tomando todas as decisões importantes sozinho.',
         pontos: [
-          'Situação: o faturamento está crescendo, mas todas as decisões estratégicas são tomadas sem apoio externo — alguém que conheça os números e a meta.',
-          'Impacto: momentos de crescimento exigem mais decisões, mais rápido. Donos que decidem sozinhos executam em média 35% do que planejam; com accountability externo, esse número sobe para 65%.',
-          'Urgência: o custo de decidir sozinho aumenta conforme o negócio cresce. O que funciona com R$50k/mês começa a falhar com R$150k/mês.'
+          'O que está acontecendo: o faturamento cresceu. Mas todas as decisões estratégicas continuam sendo tomadas sem ninguém que conheça os números e a meta de perto.',
+          'O que isso está custando: donos que decidem sozinhos executam em média 35% do que planejam. Com apoio externo, esse número sobe para 65%. A diferença entre os dois é o crescimento que está ficando para trás.',
+          'Por que resolver agora: o custo de decidir sozinho não é estático — ele cresce junto com o negócio. O que funcionava com R$ 50k/mês começa a falhar com R$ 150k/mês.'
         ],
-        plano_acao: 'Mapear as 3 decisões mais importantes que estão em aberto agora.',
+        plano_acao: 'Colocar no papel as 3 decisões que estão em aberto e tomar pelo menos 1 ainda hoje.',
         passos: [
-          'Escreva as 3 decisões que você está adiando no negócio — aquelas que você sabe que precisam ser tomadas mas ainda não foram.',
-          'Para cada uma, anote: qual é o custo concreto de continuar sem decidir por mais 1 semana?',
-          'Tome pelo menos 1 dessas decisões ainda hoje — não precisa ser perfeita, precisa ser tomada e colocada em movimento.'
+          'Escreva as 3 decisões que você está adiando no negócio — aquelas que você sabe que precisam ser tomadas, mas continuam esperando.',
+          'Para cada uma, anote: qual é o custo real de continuar sem decidir por mais 1 semana? Seja específico.',
+          'Tome pelo menos 1 dessas decisões ainda hoje. Não precisa ser perfeita — precisa sair do papel.'
         ],
         tempo: '1 hora',
         medida: '1 decisão tomada e em execução antes do fim da semana.'
@@ -1558,17 +1686,17 @@ function buildFallback(scores, overall) {
     // G9: Tem ativos e faz reativação, mas não acompanha números
     if ((a.assets || 1) >= 3 && (a.reactivation || 1) >= 3 && (a.metrics || 1) <= 2) {
       return {
-        titulo: 'Operação ativa mas sem dados para saber o que está funcionando',
+        titulo: 'O negócio está rodando — mas sem os números certos, você não sabe o que está gerando resultado.',
         pontos: [
-          'Situação: a operação está rodando, ativos são usados e a base é reativada, mas os indicadores críticos não são acompanhados com regularidade.',
-          'Impacto: sem dados, não é possível distinguir o que está gerando resultado do que está consumindo recursos sem retorno.',
-          'Urgência: negócios nesse estágio têm alavancas de otimização valiosas — mas só ficam visíveis com os números certos na mesa.'
+          'O que está acontecendo: a operação está ativa, recursos são usados e a base é reativada. Mas os indicadores críticos não estão sendo acompanhados com regularidade.',
+          'O que isso está custando: sem dados, é impossível separar o que está funcionando do que está consumindo recurso sem retorno. Você pode estar investindo no que não converte e cortando o que funciona.',
+          'Por que resolver agora: negócios nesse estágio têm alavancas de otimização que valem muito — mas elas só aparecem quando os números certos estão na mesa.'
         ],
-        plano_acao: 'Estabelecer o acompanhamento semanal de 3 indicadores críticos.',
+        plano_acao: 'Estabelecer hoje o acompanhamento semanal de 3 indicadores críticos.',
         passos: [
           'Escolha os 3 indicadores mais relevantes para o seu modelo: custo para conseguir cada novo contato interessado, percentual de quem chega e acaba comprando de contato para venda e valor médio de cada venda.',
-          'Levante os valores atuais de cada um — mesmo que aproximados, a ordem de grandeza já é útil.',
-          'Crie uma planilha simples para registrar esses 3 números toda semana, com data. O objetivo é ver a tendência, não a perfeição.'
+          'Levante os valores atuais de cada um — mesmo que aproximados. A ordem de grandeza já diz muito.',
+          'Crie uma planilha simples com esses 3 campos e preencha toda semana, com data. O objetivo é ver a tendência — não a perfeição.'
         ],
         tempo: '1 hora',
         medida: 'Os 3 indicadores estão registrados e você sabe a tendência atual de cada um.'
@@ -1579,81 +1707,81 @@ function buildFallback(scores, overall) {
     const weakest = Object.entries(scores).sort((a,b) => a[1]-b[1])[0][0];
     const defaults = {
       'Clareza de Metas': {
-        titulo: 'Negócio opera sem uma meta numérica definida',
+        titulo: 'Sem um número claro para os próximos 90 dias, o negócio está operando sem destino.',
         pontos: [
-          'Situação: não há um número claro para os próximos 90 dias nem confirmação de onde vem a maior parte do faturamento.',
-          'Impacto: sem meta, qualquer resultado é aceitável — o que na prática significa que nenhum resultado é cobrado.',
-          'Urgência: definir a meta é o primeiro passo do método MSFA. Tudo o mais — processo, ativos, apoio — serve para atingir um número específico.'
+          'O que está acontecendo: não existe uma meta com número definido para os próximos 90 dias. E sem saber de onde vem a maior parte do faturamento, cada decisão é tomada no escuro.',
+          'O que isso está custando: sem meta, qualquer resultado é aceitável. E na prática, isso significa que nenhum resultado é cobrado — de ninguém, por ninguém.',
+          'Por que resolver agora: meta é o ponto de partida. Processo, recursos, apoio — tudo serve para atingir um número específico. Sem o número, o resto não tem direção.'
         ],
-        plano_acao: 'Definir a meta dos próximos 90 dias com número e produto.',
+        plano_acao: 'Definir esta semana a meta dos próximos 90 dias — com número, produto e alguém para cobrar.',
         passos: [
-          'Reserve 1 hora e escreva: "Em 90 dias quero faturar R$ ___ por mês."',
-          'Identifique qual produto ou serviço vai gerar a maior parte desse crescimento.',
-          'Compartilhe essa meta com alguém que possa cobrar você na semana seguinte.'
+          'Reserve 1 hora e escreva: \'Em 90 dias quero faturar R$ ___ por mês.\' Não avance sem o número preenchido.',
+          'Identifique qual produto ou serviço vai gerar a maior parte desse crescimento. Seja específico.',
+          'Compartilhe essa meta com alguém que vai te cobrar na semana seguinte. Meta sem cobrança externa é intenção.'
         ],
         tempo: '1 hora',
         medida: 'Você consegue responder sem hesitar qual é o número e qual produto vai gerar isso.'
       },
       'Processo de Vendas': {
-        titulo: 'Processo de vendas informal reduz as vendas que o negócio poderia fechar',
+        titulo: 'Cada atendimento acontece de um jeito diferente — e o resultado varia na mesma proporção.',
         pontos: [
-          'Situação: não há um processo documentado e seguido do contato ao fechamento.',
-          'Impacto: sem processo, a conversão varia a cada atendimento — o resultado depende de quem está vendendo e em qual dia.',
-          'Urgência: documentar o processo é a ação que mais rapidamente estabiliza a receita sem aumentar o investimento em captação.'
+          'O que está acontecendo: não existe um processo documentado do primeiro contato ao fechamento. Cada venda depende de como o vendedor está naquele dia.',
+          'O que isso está custando: sem processo, a conversão varia a cada atendimento. O negócio pode estar fechando metade do que poderia — e você não tem como saber.',
+          'Por que resolver agora: documentar o processo é a ação que mais rapidamente estabiliza a receita sem aumentar o investimento em captação.'
         ],
-        plano_acao: 'Documentar o processo de vendas atual em até 5 etapas.',
+        plano_acao: 'Documentar o processo de vendas atual em até 5 etapas — como acontece hoje, sem idealizar.',
         passos: [
-          'Escreva os passos desde o primeiro contato até o fechamento como acontecem hoje, sem idealizar.',
-          'Identifique em qual etapa a maioria dos contatos para de avançar.',
-          'Crie um roteiro simples para essa etapa e teste com os próximos 5 clientes em potencial.'
+          'Escreva os passos do primeiro contato até o fechamento como acontecem de verdade. Não como você gostaria que acontecessem.',
+          'Identifique em qual etapa a maioria dos contatos para de avançar. Esse é o ponto que está custando mais.',
+          'Crie um roteiro simples para essa etapa e teste com os próximos 5 contatos. Observe o que muda.'
         ],
         tempo: '1 a 2 horas',
-        medida: 'Processo documentado e roteiro definido para o ponto onde o negócio mais perde clientes em potencial.'
+        medida: 'Processo documentado e roteiro definido para o ponto onde o negócio mais perde contatos.'
       },
       'Ativos e Oportunidades': {
         titulo: 'Ativos disponíveis não estão sendo usados para gerar receita',
         pontos: [
-          'Situação: há uma base de clientes, recursos e histórico de campanhas que não estão sendo explorados.',
-          'Impacto: esses ativos já foram pagos e têm custo de reativação próximo de zero — mas não estão gerando retorno.',
-          'Urgência: o primeiro passo do método MSFA é mapear o que o negócio já tem. Frequentemente, a maior oportunidade imediata está ali.'
+          'O que está acontecendo: existem recursos disponíveis — base de clientes, listas de contatos, campanhas que já rodaram — que não estão sendo usados para gerar receita.',
+          'O que isso está custando: esses recursos já foram pagos. Não usá-los não é neutro — é custo de oportunidade real, toda semana.',
+          'Por que resolver agora: o custo de reativar esses recursos é próximo de zero. A oportunidade de retorno imediato é alta. Não existe razão para esperar.'
         ],
         plano_acao: 'Mapear todos os ativos disponíveis e identificar o de maior retorno imediato.',
         passos: [
           'Liste tudo que o negócio tem: base de clientes, listas de e-mail, listas de pessoas que já tiveram contato com o negócio, campanhas anteriores, processos de venda que foram pausados.',
           'Para cada ativo, anote: está ativo? Gerou resultado quando foi usado? Por que parou?',
-          'Escolha o de maior potencial e defina uma ação para reativá-lo ainda esta semana.'
+          'Escolha o de maior potencial e defina uma ação concreta para reativá-lo ainda esta semana.'
         ],
         tempo: '1 hora',
         medida: '1 ativo reativado com uma ação concreta definida e em execução.'
       },
       'Foco do Dono': {
-        titulo: 'Tempo do dono concentrado em operação, não em crescimento',
+        titulo: 'O seu tempo está indo para o lugar errado — e o negócio está crescendo no ritmo que isso permite.',
         pontos: [
-          'Situação: a maior parte do tempo vai para gestão operacional em vez de estratégia e decisões de alto impacto.',
-          'Impacto: o negócio tem um teto de crescimento igual à capacidade operacional do dono.',
-          'Urgência: cada hora operacional que o dono substitui por uma ação estratégica tem retorno significativamente maior.'
+          'O que está acontecendo: a maior parte do tempo vai para gestão operacional. Estratégia, crescimento e decisões de alto impacto ficam para depois.',
+          'O que isso está custando: o negócio cresce no ritmo que o dono permite. Quando o dono está preso na operação, o crescimento tem o mesmo teto que a capacidade operacional de uma pessoa.',
+          'Por que resolver agora: cada hora que você tira da operação e coloca em estratégia ou ação comercial tem retorno múltiplas vezes maior. O problema não é o tempo — é para onde ele vai.'
         ],
-        plano_acao: 'Delegar 1 tarefa operacional e usar esse tempo em uma ação comercial.',
+        plano_acao: 'Liberar esta semana 1 hora de operação e usar esse tempo em uma ação que gera receita.',
         passos: [
-          'Liste tudo que você fez nos últimos 3 dias e separe: o que só você pode fazer vs o que outra pessoa poderia.',
-          'Escolha 1 tarefa da segunda coluna e passe para alguém hoje.',
-          'Use o tempo liberado para entrar em contato com 1 cliente ou prospect que estava sendo adiado.'
+          'Liste tudo que você fez nos últimos 3 dias. Separe: o que só você pode fazer vs o que outra pessoa poderia fazer com um alinhamento.',
+          'Escolha 1 tarefa da segunda coluna e delegue ainda hoje — com 30 minutos de alinhamento se necessário.',
+          'Use o tempo liberado para entrar em contato com um cliente ou prospect que estava sendo adiado. Não para mais operação.'
         ],
         tempo: '1 hora mais a delegação',
         medida: '1 tarefa delegada e 1 ligação ou mensagem comercial feita.'
       },
       'Apoio Estratégico': {
-        titulo: 'Decisões estratégicas sendo tomadas sem apoio externo',
+        titulo: 'Você está tomando todas as decisões importantes do negócio sozinho — e pagando o preço disso.',
         pontos: [
-          'Situação: não há um parceiro estratégico que conheça os números e a meta do negócio.',
-          'Impacto: donos que decidem sozinhos executam em média 35% do que planejam. Com accountability externo, esse número sobe para 65%.',
-          'Urgência: o custo de decidir sozinho aumenta conforme o negócio cresce e as decisões ficam mais complexas.'
+          'O que está acontecendo: não existe um parceiro estratégico que conheça os números e a meta do negócio e esteja comprometido com os resultados.',
+          'O que isso está custando: donos que decidem sozinhos executam em média 35% do que planejam. Com apoio externo, esse número sobe para 65%. Essa diferença é o crescimento que está ficando para trás.',
+          'Por que resolver agora: o custo de decidir sozinho não é fixo. Ele aumenta conforme o negócio cresce e as decisões ficam mais complexas e mais caras.'
         ],
-        plano_acao: 'Mapear as decisões mais importantes em aberto e tomar pelo menos 1.',
+        plano_acao: 'Colocar no papel as 3 decisões mais importantes em aberto e tomar pelo menos 1 ainda hoje.',
         passos: [
-          'Escreva as 3 decisões que você está adiando no negócio.',
-          'Para cada uma, anote: qual é o custo de continuar sem decidir por mais 1 semana?',
-          'Tome 1 dessas decisões hoje — não perfeita, mas tomada e em movimento.'
+          'Escreva as 3 decisões que você está adiando — as que você sabe que precisam ser tomadas, mas continuam esperando o momento certo.',
+          'Para cada uma: qual é o custo concreto de continuar sem decidir por mais 1 semana? Coloque em reais se conseguir.',
+          'Tome 1 dessas decisões ainda hoje. Não perfeita — tomada e em movimento.'
         ],
         tempo: '1 hora',
         medida: '1 decisão tomada e em execução antes do fim da semana.'
@@ -1671,11 +1799,11 @@ function buildFallback(scores, overall) {
     // O1: Tem clientes mas não os reativa — alavanca de custo zero
     if ((a.reactivation || 1) <= 2 && (a.assets || 1) >= 2) {
       return {
-        titulo: 'Base de clientes existente pronta para gerar receita imediata',
+        titulo: 'Tem dinheiro parado na sua base de clientes — e ele pode entrar esta semana.',
         pontos: [
           'Ativo identificado: há clientes que já compraram e têm histórico de relacionamento com o negócio.',
-          'Ação possível: uma oferta personalizada para essa base custa próximo de zero em aquisição e tende a ter percentual de compra maior do que contatos que ainda não conhecem o negócio.',
-          'Raciocínio: o impacto exato depende do valor médio de cada venda e do volume da base — dois dados que a Análise de Crescimento vai levantar. O custo de testar é quase nenhum.'
+          'O que é possível fazer: uma oferta personalizada para essa base custa próximo de zero em captação — e tende a converter muito mais do que contatos que ainda não te conhecem.',
+          'Por que funciona: o impacto exato depende do tamanho da base e do valor médio de cada venda — dois dados que a Análise de Crescimento vai levantar. O custo de testar é quase zero. O custo de não testar, você já está pagando.'
         ]
       };
     }
@@ -1683,11 +1811,11 @@ function buildFallback(scores, overall) {
     // O2: Tem processo mas acompanhamento falha — correção pontual de alto impacto
     if ((a.funnel || 1) >= 3 && (a.followup || 1) <= 2) {
       return {
-        titulo: 'Processo de vendas sólido com uma correção pontual de alto impacto',
+        titulo: 'O processo está funcionando — falta uma peça que está custando vendas toda semana.',
         pontos: [
           'Ativo identificado: o processo de vendas está documentado e é seguido pela equipe.',
-          'Ação possível: corrigir o acompanhamento não exige reconstruir o processo — exige adicionar uma etapa que já deveria estar lá.',
-          'Raciocínio: quando o processo funciona bem mas o acompanhamento falha, a conversão tende a subir de forma rápida após a correção, sem custo adicional de divulgação.'
+          'O que é possível fazer: corrigir o acompanhamento não exige reconstruir nada — exige adicionar uma etapa que já deveria estar lá.',
+          'Por que funciona: quando o processo está sólido e o acompanhamento falha, a conversão tende a subir de forma rápida após a correção. Sem custo adicional, sem mudança de estrutura.'
         ]
       };
     }
@@ -1695,11 +1823,11 @@ function buildFallback(scores, overall) {
     // O3: Crescimento acontece — momento para estruturar e escalar
     if ((a.growth || 1) >= 3) {
       return {
-        titulo: 'Momento de crescimento favorável para estruturar a escala',
+        titulo: 'O negócio está crescendo — e esse é o momento de estruturar antes que o crescimento vire caos.',
         pontos: [
           'Ativo identificado: o faturamento está crescendo — o mercado está respondendo ao que o negócio entrega.',
-          'Ação possível: estruturar processos e indicadores agora, enquanto cresce, custa muito menos do que reconstruir depois que o crescimento cria caos operacional.',
-          'Raciocínio: negócios que estruturam no momento de crescimento chegam ao próximo patamar com mais margem e mais controle.'
+          'O que é possível fazer: estruturar processos e indicadores agora, enquanto cresce, custa muito menos do que reconstruir depois que o crescimento criou uma bagunça operacional.',
+          'Por que funciona: negócios que estruturam no momento de crescimento chegam ao próximo patamar com mais margem, mais controle e muito menos desgaste.'
         ]
       };
     }
@@ -1707,11 +1835,11 @@ function buildFallback(scores, overall) {
     // O4: Tem meta clara — foco permite otimização precisa
     if ((a.goal || 1) >= 3 && (a.revenue_source || 1) >= 2) {
       return {
-        titulo: 'Meta definida permite concentrar esforço na alavanca certa',
+        titulo: 'Você tem um número claro — e isso muda completamente o peso de cada decisão.',
         pontos: [
           'Ativo identificado: há uma meta clara e uma ideia da principal fonte de receita.',
-          'Ação possível: com destino definido, é possível avaliar cada decisão com um critério objetivo: isso me aproxima ou me afasta do número?',
-          'Raciocínio: a clareza de meta é o que transforma esforço disperso em execução direcionada. Negócios com meta definida tomam decisões mais rápidas e descartam distrações com mais facilidade.'
+          'O que é possível fazer: com destino definido, cada decisão pode ser avaliada com um critério objetivo — isso me aproxima ou me afasta do número?',
+          'Por que funciona: a clareza de meta transforma esforço disperso em execução direcionada. Negócios com meta definida tomam decisões mais rápidas e descartam distrações com muito mais facilidade.'
         ]
       };
     }
@@ -1719,11 +1847,11 @@ function buildFallback(scores, overall) {
     // O5: Tem indicadores — visibilidade para otimização imediata
     if ((a.metrics || 1) >= 3) {
       return {
-        titulo: 'Visibilidade dos números permite identificar onde otimizar',
+        titulo: 'Você acompanha os números — e isso significa que já sabe onde está o dinheiro para otimizar.',
         pontos: [
           'Ativo identificado: os indicadores críticos são acompanhados com regularidade.',
-          'Ação possível: com dados reais, é possível identificar a etapa do processo de venda com maior perda e concentrar esforço exatamente ali.',
-          'Raciocínio: quem conhece os números tem uma vantagem operacional real — a questão é garantir que as decisões tomadas reflitam o que os dados mostram.'
+          'O que é possível fazer: com dados reais, é possível identificar a etapa do processo com maior perda e concentrar esforço exatamente ali — sem adivinhar.',
+          'Por que funciona: quem conhece os números tem uma vantagem operacional real e crescente. A questão agora é garantir que as decisões tomadas reflitam o que os dados mostram.'
         ]
       };
     }
@@ -1731,11 +1859,11 @@ function buildFallback(scores, overall) {
     // O6: Tem apoio estratégico — acelera a implementação
     if ((a.help || 1) >= 3) {
       return {
-        titulo: 'Apoio estratégico disponível para acelerar a implementação',
+        titulo: 'Você tem apoio estratégico — e essa é a vantagem que a maioria dos donos de negócio não tem.',
         pontos: [
           'Ativo identificado: há um parceiro ou estrutura de apoio que acompanha as decisões do negócio.',
-          'Ação possível: usar esse apoio para priorizar a ação da semana com base no diagnóstico que acaba de ser feito.',
-          'Raciocínio: donos com accountability externo executam quase o dobro do que os que decidem sozinhos. O ativo já existe — a questão é direcionar para o gargalo certo.'
+          'O que é possível fazer: usar esse apoio agora, com o diagnóstico na mão, para priorizar a ação de maior impacto da semana.',
+          'Por que funciona: donos com apoio externo executam em média o dobro do que os que decidem sozinhos. O recurso já existe — a questão é direcionar para o gargalo certo.'
         ]
       };
     }
@@ -1743,11 +1871,11 @@ function buildFallback(scores, overall) {
     // Default: strongest category
     const strongest = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
     return {
-      titulo: `${strongest} é a base mais sólida para partir`,
+      titulo: `${strongest} é onde o negócio está mais estruturado — e é por aí que começa.`,
       pontos: [
         `Ativo identificado: entre todas as áreas avaliadas, ${strongest.toLowerCase()} é onde o negócio está mais estruturado.`,
-        'Ação possível: usar essa área como ponto de partida para atacar o gargalo identificado no diagnóstico.',
-        'Raciocínio: negócios que alavancam o que já funciona bem chegam aos resultados com mais consistência do que os que tentam consertar tudo ao mesmo tempo.'
+        'O que é possível fazer: usar essa área como base para atacar o gargalo identificado. Não começa do zero — começa de onde já funciona.',
+        'Por que funciona: negócios que alavancam o que já está funcionando chegam aos resultados com mais consistência do que os que tentam consertar tudo ao mesmo tempo.'
       ]
     };
   }
@@ -1779,8 +1907,8 @@ function buildFallback(scores, overall) {
     plano_passos: gargalo.passos,
     plano_tempo: gargalo.tempo,
     plano_medida: gargalo.medida,
-    cta_titulo: 'O diagnóstico completo começa com uma conversa',
-    cta_corpo: 'Esse diagnóstico apontou onde olhar. A Análise de Crescimento e Escala gratuita é onde entramos no seu negócio de verdade, levantamos os números reais e saímos com o plano completo. Seria um desperdício parar aqui.'
+    cta_titulo: 'O diagnóstico mostrou onde olhar. A próxima conversa mostra o que fazer.',
+    cta_corpo: 'Você acabou de ver onde está o gargalo e onde está o dinheiro parado. A Análise de Crescimento e Escala gratuita é onde a gente entra no seu negócio de verdade — levanta os números reais, mapeia o que está represado e sai com um plano concreto. Parar aqui seria deixar o trabalho na metade.'
   };
 }
 
@@ -1886,10 +2014,10 @@ async function generateResult() {
       <div style="background:rgba(42,184,168,0.06);border:1px solid rgba(42,184,168,0.15);border-radius:14px;padding:20px 24px;margin-bottom:28px;text-align:left">
         <p style="font-size:13px;color:var(--teal);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px">O que você vai ter ao final da análise:</p>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(242,244,250,0.85)"><span style="color:var(--teal);flex-shrink:0">→</span> Clareza sobre onde a receita está sendo desperdiçada na operação</div>
-          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(242,244,250,0.85)"><span style="color:var(--teal);flex-shrink:0">→</span> Identificação de onde é possível gerar mais receita com o que o negócio já tem</div>
-          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(242,244,250,0.85)"><span style="color:var(--teal);flex-shrink:0">→</span> Visão clara dos próximos passos e como priorizá-los</div>
-          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(242,244,250,0.85)"><span style="color:var(--teal);flex-shrink:0">→</span> Se fizer sentido, como a BG CrieAtivos pode apoiar a implementação</div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(242,244,250,0.85)"><span style="color:var(--teal);flex-shrink:0">→</span> Exatamente onde a receita está vazando na operação — com número e contexto</div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(242,244,250,0.85)"><span style="color:var(--teal);flex-shrink:0">→</span> Onde é possível gerar mais receita com o que o negócio já tem, sem aumentar investimento</div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(242,244,250,0.85)"><span style="color:var(--teal);flex-shrink:0">→</span> Os próximos passos em ordem de prioridade — sem lista de tarefas, sem teoria</div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(242,244,250,0.85)"><span style="color:var(--teal);flex-shrink:0">→</span> Se fizer sentido, como a BG CrieAtivos entra na implementação junto com você</div>
         </div>
       </div>
       <a href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20fiz%20o%20diagn%C3%B3stico%20e%20quero%20agendar%20minha%20An%C3%A1lise%20de%20Crescimento%20e%20Escala" target="_blank" class="btn-cta">
