@@ -991,6 +991,136 @@
   .bar-low { background: linear-gradient(90deg, #E8A020, #F5C060); }
   .bar-mid { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
   .bar-high { background: linear-gradient(90deg, var(--teal), var(--teal2)); }
+
+  /* ── CAPTURE SCREEN ── */
+  #capture {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 60px 24px;
+    text-align: center;
+  }
+
+  .capture-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,162,39,0.12);
+    border: 1px solid rgba(201,162,39,0.35);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--gold2);
+    margin-bottom: 24px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .capture-title {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 600px;
+    margin-bottom: 12px;
+    animation: fadeUp 0.5s 0.05s ease both;
+  }
+
+  .capture-sub {
+    font-size: 15px;
+    color: rgba(242,244,250,0.65);
+    line-height: 1.6;
+    max-width: 460px;
+    margin: 0 auto 40px;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  .capture-form {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: fadeUp 0.5s 0.15s ease both;
+  }
+
+  .capture-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+
+  .capture-field label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .capture-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    width: 100%;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+    box-sizing: border-box;
+  }
+  .capture-input:focus {
+    border-color: rgba(42,184,168,0.5);
+    background: rgba(42,184,168,0.05);
+  }
+  .capture-input::placeholder { color: rgba(126,132,158,0.7); }
+  .capture-input.error { border-color: rgba(232,80,80,0.6); }
+
+  .capture-error-msg {
+    font-size: 12px;
+    color: #E85050;
+    display: none;
+    margin-top: -6px;
+  }
+  .capture-error-msg.visible { display: block; }
+
+  .btn-capture {
+    background: linear-gradient(135deg, var(--teal), #1E9B8C);
+    border: none;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 18px 40px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-capture::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+  }
+  .btn-capture:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(42,184,168,0.35); }
+  .btn-capture:active { transform: scale(0.98); }
+
+  .capture-privacy {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 16px;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
 </style>
 </head>
 <body>
@@ -1054,6 +1184,51 @@
       <div class="quiz-step-label" id="step-category">Contexto</div>
     </div>
     <div class="quiz-body" id="quiz-body"></div>
+  </section>
+
+
+  <!-- ═══════════════════════ CAPTURE ═══════════════════════ -->
+  <section id="capture" class="screen">
+    <div class="capture-badge">⚡ Quase lá — seu diagnóstico está pronto</div>
+    <h2 class="capture-title">Para onde enviamos<br>o resultado?</h2>
+    <p class="capture-sub">Preencha abaixo para liberar seu diagnóstico completo e o plano de ação da semana.</p>
+
+    <div class="capture-form">
+      <div class="capture-field">
+        <label>Nome</label>
+        <input type="text" id="cap-name" class="capture-input" placeholder="Seu nome" autocomplete="given-name">
+        <span class="capture-error-msg" id="err-name">Por favor, informe seu nome.</span>
+      </div>
+      <div class="capture-field">
+        <label>WhatsApp / Telefone</label>
+        <input type="tel" id="cap-phone" class="capture-input" placeholder="(11) 99999-9999" autocomplete="tel">
+        <span class="capture-error-msg" id="err-phone">Por favor, informe seu telefone.</span>
+      </div>
+      <div class="capture-field">
+        <label>E-mail</label>
+        <input type="email" id="cap-email" class="capture-input" placeholder="seu@email.com" autocomplete="email">
+        <span class="capture-error-msg" id="err-email">Por favor, informe um e-mail válido.</span>
+      </div>
+      <button class="btn-capture" onclick="submitCapture()">Ver meu diagnóstico →</button>
+    </div>
+    <p class="capture-privacy">🔒 Suas informações são confidenciais. Sem spam.</p>
+
+    <!-- Hidden iframe for silent MailerLite submission -->
+    <iframe name="ml-silent-frame" style="display:none;width:0;height:0;border:0;position:absolute;"></iframe>
+    <!-- Hidden form targeting the iframe -->
+    <form
+      id="ml-hidden-form"
+      action="https://assets.mailerlite.com/jsonp/1723095/forms/188082511271691616/subscribe"
+      method="post"
+      target="ml-silent-frame"
+      style="display:none;">
+      <input type="hidden" name="fields[name]"    id="ml-name">
+      <input type="hidden" name="fields[phone]"   id="ml-phone">
+      <input type="hidden" name="fields[email]"   id="ml-email">
+      <input type="hidden" name="fields[company]" id="ml-company">
+      <input type="hidden" name="ml-submit"        value="1">
+      <input type="hidden" name="anticsrf"         value="true">
+    </form>
   </section>
 
   <!-- ═══════════════════════ LOADING ═══════════════════════ -->
@@ -1324,8 +1499,55 @@ function goNext() {
     currentQ++;
     renderQuestion(currentQ);
   } else {
-    showLoading();
+    showCapture();
   }
+}
+
+// ════════════════════════════════════════════════════════
+// CAPTURE SCREEN
+// ════════════════════════════════════════════════════════
+function showCapture() {
+  showScreen('capture');
+}
+
+const REVENUE_MAP = {
+  1: 'Abaixo de R$ 30.000/mês',
+  2: 'Entre R$ 30.000 e R$ 60.000/mês',
+  3: 'Entre R$ 60.000 e R$ 150.000/mês',
+  4: 'Acima de R$ 150.000/mês'
+};
+
+function submitCapture() {
+  const name  = document.getElementById('cap-name').value.trim();
+  const phone = document.getElementById('cap-phone').value.trim();
+  const email = document.getElementById('cap-email').value.trim();
+
+  // Validate
+  let valid = true;
+
+  const showErr = (id, inputId, show) => {
+    document.getElementById(id).classList.toggle('visible', show);
+    document.getElementById(inputId).classList.toggle('error', show);
+    if (show) valid = false;
+  };
+
+  showErr('err-name',  'cap-name',  !name);
+  showErr('err-phone', 'cap-phone', !phone);
+  showErr('err-email', 'cap-email', !email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email));
+
+  if (!valid) return;
+
+  // Populate hidden form
+  document.getElementById('ml-name').value    = name;
+  document.getElementById('ml-phone').value   = phone;
+  document.getElementById('ml-email').value   = email;
+  document.getElementById('ml-company').value = REVENUE_MAP[answers['revenue']] || '';
+
+  // Submit silently via iframe
+  document.getElementById('ml-hidden-form').submit();
+
+  // Proceed to loading + result
+  showLoading();
 }
 
 function goBack() {
